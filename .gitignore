@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+public/css/*
+!public/css/README.md
+public/fonts/icon-fonts/*
+!public/fonts/icon-fonts/README.md
+public/minjs/*
+!public/minjs/README.md
+public/index.html
