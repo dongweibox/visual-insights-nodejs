@@ -1,10 +1,26 @@
+/**
+ * Copyright 2015 IBM Corp. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* global $, d3*/
+
+'use strict';
+
 /*
 treemap viz
 */
 (function() {
-  'use strict';
-  // $(document).ready(loadViz);
-
   function loadViz(results) {
 
     // empty table and viz
@@ -39,7 +55,7 @@ treemap viz
       for (var i = 0; i < d3Data.length; i++) {
         match = true;
         for (var j = 0; j < arr.length; j++) {
-          if (d3Data[i].category == arr[j]) {
+          if (d3Data[i].category === arr[j]) {
             match = false;
             break;
           }
@@ -60,12 +76,12 @@ treemap viz
       var output = '';
       // find index
       for (var i = 0; i < categories.length; i++) {
-        if (category == categories[i]) {
+        if (category === categories[i]) {
           index = i;
         }
       }
       // did not match
-      if (index == -1) {
+      if (index === -1) {
         output = unknownColor;
       } else {
         output = colors[index];
@@ -85,7 +101,7 @@ treemap viz
       .on('end', draw)
       .start();
 
-    function draw(words) {
+    function draw() {
       d3.select('.output--viz')
         .append('g').attr('class', 'cloud')
         .selectAll('text')
@@ -93,7 +109,7 @@ treemap viz
         .enter().append('text')
         .style('font-size', function(d) { return d.size + 'px'; })
         .style('font-weight', function(d) { return d.size > 27 ? ( d.size > 30 ? 'bold' : 500 ) : 'normal'; })
-        .style('fill', function(d, i) {
+        .style('fill', function(d) {
           return color(d.category);
         })
         .attr('transform', function(d) {
@@ -176,7 +192,7 @@ treemap viz
   // centers viz
   function centerViz() {
     // if g.cloud doesn't exist, do nothing
-    if (d3.select('.cloud')[0][0] == null) {
+    if (d3.select('.cloud')[0][0] === null) {
       return;
     }
 

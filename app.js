@@ -21,7 +21,6 @@ var express = require('express'),
   bluemix = require('./config/bluemix'),
   extend = require('util')._extend,
   watson = require('watson-developer-cloud'),
-  multiparty = require('multiparty'),
   fs = require('fs');
 
 // Bootstrap application settings
@@ -33,23 +32,27 @@ var credentials = extend({
   username: '<username>',
   password: '<password>',
   version: 'v1'
-}, bluemix.getServiceCreds('visual-insights')); // VCAP_SERVICES
+}, bluemix.getServiceCreds('visual_insights')); // VCAP_SERVICES
 
+var datasets = {
+  person1: fs.createReadStream('./public/images/person1.zip'),
+  person2: fs.createReadStream('./public/images/person2.zip'),
+};
 
 // wrapper
 var visual_insights = watson.visual_insights(credentials);
 
 // get profile summary image analysis
 app.post('/summary', function(req, res, next) {
-  var examplesTemplate = req.body.examplesTemplate;
-  var images_file = fs.createReadStream('./public/images/'+examplesTemplate+'.zip');
+  var images_file = datasets[req.body.dataset];
+  if (!images_file)
+    return res.status(404).json({error:'The dataset is not found.  Please try again.', code:404});
 
   visual_insights.summary({images_file: images_file}, function (err, result) {
-    if (err) {
-      next(err);
-      return;
-    }
-    res.json(result);
+    if (err)
+      return next(err);
+    else
+      res.json(result);
   });
 });
 
