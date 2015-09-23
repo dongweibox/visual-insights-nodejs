@@ -34,16 +34,17 @@ var credentials = extend({
   version: 'v1'
 }, bluemix.getServiceCreds('visual_insights')); // VCAP_SERVICES
 
-var datasets = {
-  person1: fs.createReadStream('./public/images/person1.zip'),
-  person2: fs.createReadStream('./public/images/person2.zip'),
-};
 
 // wrapper
 var visual_insights = watson.visual_insights(credentials);
 
 // get profile summary image analysis
 app.post('/summary', function(req, res, next) {
+  var datasets = {
+    person1: fs.createReadStream('./public/images/person1.zip'),
+    person2: fs.createReadStream('./public/images/person2.zip'),
+  };
+
   var images_file = datasets[req.body.dataset];
   if (!images_file)
     return res.status(404).json({error:'The dataset is not found.  Please try again.', code:404});
