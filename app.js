@@ -31,7 +31,7 @@ var credentials = extend({
   url: '<url>',
   username: '<username>',
   password: '<password>',
-  version: 'v1'
+  version: 'v1-experimental'
 }, bluemix.getServiceCreds('visual_insights')); // VCAP_SERVICES
 
 
